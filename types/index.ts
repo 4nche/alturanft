@@ -1,8 +1,10 @@
 export interface NFT {
-  id: string
-  name: string
+  tokenId: string
+  tokenType: string
+  title: string
+  description: string
+  timeLastUpdated: string
   imageUrl: string
-  lastSalePrice: string
-  purchaseUrl: string
-  price: string
+  openSeaUrl: string
+  floorPrice: number
 }
