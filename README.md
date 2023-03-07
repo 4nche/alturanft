@@ -1,7 +1,8 @@
 # anche assignment for altura nft
 
 to do:
-- error state for nft lists page
+- ✅ error state for nft lists page
+- loading state for nft lists page
 - nft modal
 - loader on search page when the user clicks on enter
 

@@ -6,6 +6,7 @@ import { getRunningQueriesThunk, nftsApi, useGetNftsByOwnerQuery } from '~/clien
 import NftCard from '~/components/Nfts/Card'
 import PageHeader from '~/components/UI/PageHeader'
 import StandardTemplate from '~/components/UI/StandardTemplate'
+import ErrorPage from '~/containers/ErrorPage'
 import { inputValidator } from '~/pages/api/nfts'
 import { wrapper } from '~/state/store'
 import { devices } from '~/styles/theme'
@@ -71,24 +72,43 @@ interface Props {
   owner?: string
 }
 
-function Nfts(props: Props) {
+function getPageContent(
+  { data, error, isLoading }: ReturnType<typeof useGetNftsByOwnerQuery>,
+  props: Props
+): React.ReactNode {
   const { owner } = props
-  const { data, error, isLoading } = useGetNftsByOwnerQuery(owner)
 
-  if (error) {
-    return 'error'
+  if (isLoading) {
+    return 'loading'
   }
 
+  if (data?.data) {
+    return (
+      <>
+      <PageHeader>{owner}</PageHeader>
+        <Grid>
+          {data.data.map(nft => (
+            <NftCard key={`${nft.collection}-${nft.tokenId}`} {...nft} />
+          ))}
+        </Grid>
+      </>
+    )
+  }
+
+}
+
+function Nfts(props: Props) {
+  const { owner } = props
+  const queryResult = useGetNftsByOwnerQuery(owner)
+
+  if (queryResult.error) {
+    return <ErrorPage />
+  }
 
   return (
     <StandardTemplate>
       <Container>
-        <PageHeader>{owner}</PageHeader>
-        <Grid>
-          {data?.data && data.data.map(nft => (
-            <NftCard key={`${nft.collection}-${nft.tokenId}`} {...nft} />
-          ))}
-        </Grid>
+        {getPageContent(queryResult, props)}
       </Container>
     </StandardTemplate>
   )

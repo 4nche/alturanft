@@ -27,4 +27,17 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     width: 100%;
   }
+
+  // button and anchor tag css reset
+  button, a {
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-width: 0;
+    font-weight: normal;
+    font-size: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
 `
