@@ -14,6 +14,10 @@ const ImageContainer = styled.div`
   margin-bottom: ${props => props.theme.spacing[15]};
   border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0 0;
   overflow: hidden;
+
+  & img {
+    transition: transform 500ms ${props => props.theme.animation.default};
+  }
 `
 
 const Information = styled.div`
@@ -123,15 +127,17 @@ const Container = styled.div`
 
   &:hover {
     background: ${props => props.theme.colors.background200};
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 
   &:hover ${TokenType} {
     opacity: 1
   }
+
+  &:hover ${ImageContainer} img {
+    transform: scale(1.05);
+  }
 `
-
-
 
 type Props = NFT
 

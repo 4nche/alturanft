@@ -47,8 +47,9 @@ export function inputValidator(value?: string): string | undefined {
 
 export default async function handler(req, res) {
   const { owner, original } = req.query
-  if (!!inputValidator(owner)) {
 
+
+  if (!!inputValidator(owner)) {
     res.status(400).json({
       error: {
         status: 400,
