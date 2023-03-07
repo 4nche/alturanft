@@ -15,13 +15,16 @@
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "next": "13.2.3",
+    "polished": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "styled-components": "^5.3.8"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",
     "@types/react": "18.0.28",
+    "@types/styled-components": "^5.1.26",
     "redux-logger": "^3.0.6",
     "typescript": "^4.9.5"
   }
