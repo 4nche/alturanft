@@ -21,8 +21,8 @@ const Container = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  column-gap: ${props => props.theme.spacing[20]};
-  row-gap: ${props => props.theme.spacing[20]};
+  column-gap: ${props => props.theme.spacing[10]};
+  row-gap: ${props => props.theme.spacing[10]};
 
   @media ${devices['<xxl']} {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -57,7 +57,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
       async ({ req, params }) => {
         store.dispatch(nftsApi.endpoints.getNftsByOwner.initiate(params.id as string) as any)
-        await Promise.all(store.dispatch(getRunningQueriesThunk() as any));
+        await Promise.all(store.dispatch(getRunningQueriesThunk() as any))
         return {
           props: {
             owner: params.id as string,
@@ -74,8 +74,6 @@ interface Props {
 function Nfts(props: Props) {
   const { owner } = props
   const { data, error, isLoading } = useGetNftsByOwnerQuery(owner)
-
-  console.log('DATAAAAAA', data)
 
   if (error) {
     return 'error'

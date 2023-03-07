@@ -69,12 +69,12 @@ export default async function handler(req, res) {
       const nftFormatted: NFT = {
         collection: nft.contract.openSea.collectionName,
         tokenId: nft.tokenId,
+        tokenType: nft.tokenType,
         description: nft.description,
         openSeaUrl: `https://opensea.io/assets/ethereum/${nft.contract.address}/${nft.tokenId}`,
         thumbnail: nft.media[0]?.thumbnail || nft.contract.openSea?.imageUrl,
         floorPrice: nft.contract.openSea.floorPrice,
         imageUrl: getImage(nft),
-        tokenType: nft.tokenType,
         timeLastUpdated: nft.timeLastUpdated,
         title: nft.title || nft.tokenId,
       }
