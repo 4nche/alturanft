@@ -1,8 +1,9 @@
 import { Action, combineReducers, configureStore, Middleware,  ThunkAction } from '@reduxjs/toolkit'
 import { logger }  from "redux-logger"
 import { useDispatch } from 'react-redux'
-import { nftsSlice } from '~/state/nfts'
-
+import {createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
+import { Store } from 'redux'
+import { nftsApi } from '~/client/services/nfts';
 
 type AppStore = ReturnType<typeof makeStore>
 export type AppDispatch = AppStore['dispatch']
@@ -11,12 +12,16 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, unkn
 export const useAppDispatch: () => AppDispatch = useDispatch
 
 const rootReducer = combineReducers({
-  [nftsSlice.name]: nftsSlice.reducer,
+  [nftsApi.reducerPath]: nftsApi.reducer,
 })
 
 function isServer() {
   return ! (typeof window != 'undefined' && window.document)
 }
+
+const apiMiddleware = [
+  nftsApi.middleware,
+]
 
 
 const makeStore = () => configureStore({
@@ -25,6 +30,8 @@ const makeStore = () => configureStore({
     const middleware: Middleware[] = [
       ...getDefaultMiddleware(),
       ...isServer() ? [] : [logger],
+      // RTK middleware
+      ...apiMiddleware,
     ]
 
     return middleware
@@ -32,4 +39,5 @@ const makeStore = () => configureStore({
   devTools: process.env.NODE_ENV !== 'production',
 })
 
-export const store = makeStore()
+export const wrapper = createWrapper<Store<AppState>>(makeStore, {debug: true});
+
