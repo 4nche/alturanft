@@ -26,13 +26,13 @@ export const devices = {
   'xl<': `(min-width: ${sizes.xl})`,
   'xxl<': `(min-width: ${sizes.xxl})`,
   // max width sizes, so styles inside query below size "X" will be true
-  '>xxs': `(max-width: ${sizes.xxs})`,
-  '>xs': `(max-width: ${sizes.xs})`,
-  '>sm': `(max-width: ${sizes.sm})`,
-  '>md': `(max-width: ${sizes.md})`,
-  '>lg': `(max-width: ${sizes.lg})`,
-  '>xl': `(max-width: ${sizes.xl})`,
-  '>xxl': `(max-width: ${sizes.xxl})`,
+  '<xxs': `(max-width: ${sizes.xxs})`,
+  '<xs': `(max-width: ${sizes.xs})`,
+  '<sm': `(max-width: ${sizes.sm})`,
+  '<md': `(max-width: ${sizes.md})`,
+  '<lg': `(max-width: ${sizes.lg})`,
+  '<xl': `(max-width: ${sizes.xl})`,
+  '<xxl': `(max-width: ${sizes.xxl})`,
 };
 
 const theme = {
@@ -42,8 +42,8 @@ const theme = {
     default: '1.4rem',
     lg: '1.6rem',
     xl: '2rem',
-    xxl: '2rem',
-    xxxl: '3rem',
+    xxl: '3rem',
+    xxxl: '4rem',
   },
   fontWeight: {
     light: 300,

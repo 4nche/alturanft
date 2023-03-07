@@ -13,6 +13,10 @@ const Container = styled.div`
   width: 100%;
 `
 
+const ContentContainer = styled.div`
+  margin-top: 65px;
+`
+
 interface Props {
   children: React.ReactNode
 }
@@ -22,7 +26,9 @@ function StandardTemplate(props: Props) {
   return (
     <Container>
       <ApplicationHeader />
-      {props.children}
+      <ContentContainer>
+        {props.children}
+      </ContentContainer>
     </Container>
   )
 }

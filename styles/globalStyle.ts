@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
 
   * {
     font-family: ${props => props.theme.fontFamily["sans-serif"]};
-    overscroll-behavior-y: none;
+    overscroll-behavior: none;
   }
 
   #__next {

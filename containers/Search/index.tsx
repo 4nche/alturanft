@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import ApplicationHeader from '~/components/ApplicationHeader'
 import SearchBar from '~/components/SearchBar'
 import StandardTemplate from '~/components/UI/StandardTemplate'
+import { inputValidator } from '~/pages/api/nfts'
 import { devices } from '~/styles/theme'
 
 const Container = styled.div`
@@ -24,17 +25,17 @@ const SearchBarContainer = styled.div`
     box-sizing: border-box;
     width: 60%;
 
-    @media ${devices['>md']} {
+    @media ${devices['<md']} {
       width: 80%;
     }
 
-    @media ${devices['>sm']} {
+    @media ${devices['<sm']} {
       width: 100%;
       padding-left: ${props => props.theme.spacing[40]};
       padding-right: ${props => props.theme.spacing[40]};
     }
 
-    @media ${devices['>xs']} {
+    @media ${devices['<xs']} {
       width: 100%;
       padding-left: ${props => props.theme.spacing[20]};
       padding-right: ${props => props.theme.spacing[20]};
@@ -63,7 +64,7 @@ function Search() {
 
 
   function onSubmit() {
-    const errorMessage = validator(value)
+    const errorMessage = inputValidator(value)
 
     if (errorMessage) {
       setError(errorMessage)
@@ -71,22 +72,6 @@ function Search() {
     }
 
     router.push(`/nfts/${value}`)
-  }
-
-  function validator(value?: string): string | undefined {
-
-    if (!value) {
-      return 'provide an .eth address'
-    }
-
-    if (value.includes(' ')) {
-      return '.eth address is invalid'
-    }
-    if (!value.endsWith('.eth')) {
-      return '.eth address is invalid '
-    }
-
-    return undefined
   }
 
   // useEffect that resets the errorMessage once it was shown and the user changes the value
