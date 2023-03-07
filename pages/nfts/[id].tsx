@@ -1,9 +1,12 @@
 import { GetServerSideProps, GetServerSidePropsResult } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 import { getRunningQueriesThunk, nftsApi, useGetNftsByOwnerQuery } from '~/client/services/nfts'
+import ArrowLeft from '~/components/Icons/ArrowLeft'
 import NftCard from '~/components/Nfts/Card'
+import Button, { ButtonStyle } from '~/components/UI/Button'
 import PageHeader from '~/components/UI/PageHeader'
 import StandardTemplate from '~/components/UI/StandardTemplate'
 import ErrorPage from '~/containers/ErrorPage'
@@ -54,6 +57,20 @@ const Grid = styled.div`
   }
 `
 
+const GoBack = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-right: ${props => props.theme.spacing[20]};
+  margin-top: 5px;
+`
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 0 ${props => props.theme.spacing[30]} 0;
+`
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
       async ({ req, params }) => {
@@ -85,7 +102,17 @@ function getPageContent(
   if (data?.data) {
     return (
       <>
-      <PageHeader>{owner}</PageHeader>
+        <HeaderContainer>
+          <Button buttonStyle={ButtonStyle.ContentOnly}>
+            <Link href="/">
+              <GoBack>
+                <ArrowLeft />
+              </GoBack>
+            </Link>
+          </Button>
+          <PageHeader>{owner}</PageHeader>
+        </HeaderContainer>
+
         <Grid>
           {data.data.map(nft => (
             <NftCard key={`${nft.collection}-${nft.tokenId}`} {...nft} />
