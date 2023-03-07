@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components'
 import { theme } from "~/styles/theme";
 import { GlobalStyle } from '~/styles/globalStyle'
 
-export default function App({ Component, pageProps, ...rest }) {
+export default function App({ Component, ...rest }) {
 
   const {store, props} = wrapper.useWrappedStore(rest);
 
@@ -12,7 +12,7 @@ export default function App({ Component, pageProps, ...rest }) {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Provider store={store}>
-        <Component {...pageProps} />
+        <Component {...props.pageProps} />
       </Provider>
     </ThemeProvider>
   );
