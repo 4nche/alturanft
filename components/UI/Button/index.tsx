@@ -10,7 +10,6 @@ export enum ButtonStyle {
 interface Props {
   buttonStyle?: ButtonStyle
   children: React.ReactNode
-  href?: string
 }
 
 const StyledButton = styled.div<{ buttonStyle: Props['buttonStyle'] }>`

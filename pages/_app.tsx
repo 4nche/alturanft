@@ -13,6 +13,7 @@ export default function App({ Component, ...rest }) {
       <GlobalStyle />
       <Provider store={store}>
         <Component {...props.pageProps} />
+        <div id="portal" />
       </Provider>
     </ThemeProvider>
   );

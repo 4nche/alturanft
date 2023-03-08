@@ -29,14 +29,11 @@ function getImage(rawNft: OwnedNft): string | undefined {
 // due to time constraints I choose to keep it simple, but still showcase functionality
 export function inputValidator(value?: string): string | undefined {
   if (!value) {
-    return 'provide an .eth address'
+    return 'provide an address'
   }
 
   if (value.includes(' ')) {
-    return '.eth address is invalid'
-  }
-  if (!value.endsWith('.eth')) {
-    return '.eth address is invalid '
+    return 'address is invalid'
   }
 
   return undefined
@@ -47,7 +44,6 @@ export function inputValidator(value?: string): string | undefined {
 
 export default async function handler(req, res) {
   const { owner, original } = req.query
-
 
   if (!!inputValidator(owner)) {
     res.status(400).json({
@@ -64,10 +60,13 @@ export default async function handler(req, res) {
   try {
     const nfts = await alchemy.nft.getNftsForOwner(owner)
 
-
     const mapped: NFT[] = !original && nfts.ownedNfts.map((nft) => {
 
       const nftFormatted: NFT = {
+        contract: {
+          name: nft.contract.name,
+          symbol: nft.contract.symbol,
+        },
         collection: nft.contract.openSea.collectionName,
         tokenId: nft.tokenId,
         tokenType: nft.tokenType,

@@ -115,7 +115,6 @@ const Container = styled.div`
   position: relative;
   min-width:0;
   width: 100%;
-  aspect-ratio: 1 / 1.75;
   position: relative;
   background: ${props => props.theme.colors.background500};
   border-radius: ${props => props.theme.borderRadius.lg};
@@ -124,6 +123,25 @@ const Container = styled.div`
   transition-property: transform, background-color;
   transition-duration: 500ms;
   transition-timing-function: ${props => props.theme.animation.default};
+
+  @media ${devices['xxs<']} {
+    min-height: 480px;
+  }
+
+  @media ${devices['xs<']} {
+    min-height: 320px;
+  }
+
+  @media ${devices['sm<']} {
+    min-height: 340px;
+  }
+
+  @media ${devices['md<']} {
+    min-height: 360px;
+  }
+  @media ${devices['lg<']} {
+    min-height: 400px;
+  }
 
   &:hover {
     background: ${props => props.theme.colors.background200};
@@ -139,10 +157,20 @@ const Container = styled.div`
   }
 `
 
-type Props = NFT
+type Props = {
+  onClick: () => void
+} & NFT
 
 function NftCard(props: Props) {
-  const { title, description, floorPrice, openSeaUrl, collection, tokenType  } = props
+  const {
+    title,
+    description,
+    floorPrice,
+    openSeaUrl,
+    collection,
+    tokenType,
+    contract
+  } = props
   const [src, setSrc] = React.useState(props.imageUrl)
 
   const blurProps: Pick<ImageProps, 'placeholder' | 'blurDataURL'> = {
@@ -168,7 +196,9 @@ function NftCard(props: Props) {
   }
 
   return (
-    <Container>
+    <Container
+      onClick={props.onClick}
+    >
       <TokenType>
         <TokenTypeTooltip>
           {tokenType}
@@ -191,13 +221,15 @@ function NftCard(props: Props) {
       </ImageContainer>
       <Information>
           <div>
-            <Collection>{collection}</Collection>
+            <Collection>{contract.name}</Collection>
             <Title>{title}</Title>
           </div>
           <div>
-            <FloorPrice>
-              {`${floorPrice} ETH`}
-            </FloorPrice>
+            {!!floorPrice && (
+              <FloorPrice>
+                {`${floorPrice} ETH`}
+              </FloorPrice>
+            )}
           </div>
       </Information>
     </Container>

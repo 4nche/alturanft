@@ -5,14 +5,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { getRunningQueriesThunk, nftsApi, useGetNftsByOwnerQuery } from '~/client/services/nfts'
 import ArrowLeft from '~/components/Icons/ArrowLeft'
+import Portal from '~/components/Portal'
 import NftCard from '~/components/Nfts/Card'
 import Button, { ButtonStyle } from '~/components/UI/Button'
 import PageHeader from '~/components/UI/PageHeader'
 import StandardTemplate from '~/components/UI/StandardTemplate'
 import ErrorPage from '~/containers/ErrorPage'
+import NftModal from '~/containers/NftModal/Index'
 import { inputValidator } from '~/pages/api/nfts'
 import { wrapper } from '~/state/store'
 import { devices } from '~/styles/theme'
+import { NFT } from '~/types'
 
 const Container = styled.div`
   width: 100%;
@@ -89,53 +92,80 @@ interface Props {
   owner?: string
 }
 
-function getPageContent(
-  { data, error, isLoading }: ReturnType<typeof useGetNftsByOwnerQuery>,
-  props: Props
-): React.ReactNode {
-  const { owner } = props
 
-  if (isLoading) {
-    return 'loading'
-  }
-
-  if (data?.data) {
-    return (
-      <>
-        <HeaderContainer>
-          <Button buttonStyle={ButtonStyle.ContentOnly}>
-            <Link href="/">
-              <GoBack>
-                <ArrowLeft />
-              </GoBack>
-            </Link>
-          </Button>
-          <PageHeader>{owner}</PageHeader>
-        </HeaderContainer>
-
-        <Grid>
-          {data.data.map(nft => (
-            <NftCard key={`${nft.collection}-${nft.tokenId}`} {...nft} />
-          ))}
-        </Grid>
-      </>
-    )
-  }
-
-}
 
 function Nfts(props: Props) {
   const { owner } = props
-  const queryResult = useGetNftsByOwnerQuery(owner)
+  const { data, error, isLoading } = useGetNftsByOwnerQuery(owner)
+  const [nft, setNft] = React.useState<NFT>()
+  const [modalVisible, setModalVisible] = React.useState(false)
 
-  if (queryResult.error) {
+  React.useEffect(() => {
+    setModalVisible(!!nft)
+  }, [nft])
+
+  if (error) {
     return <ErrorPage />
+  }
+
+  function onClick(nft: NFT) {
+    setNft(nft)
+  }
+
+  function onRequestCloseModal() {
+    if (!nft) {
+      return
+    }
+
+    setNft(undefined)
+  }
+
+  function getPageContent(): React.ReactNode {
+    if (isLoading) {
+      return 'loading'
+    }
+
+    if (data?.data) {
+      return (
+        <>
+          {nft && (
+            <Portal>
+              <NftModal
+                owner={owner}
+                onRequestClose={onRequestCloseModal}
+                {...nft}
+              />
+            </Portal>
+          )}
+          <HeaderContainer>
+            <Button buttonStyle={ButtonStyle.ContentOnly}>
+              <Link href="/">
+                <GoBack>
+                  <ArrowLeft />
+                </GoBack>
+              </Link>
+            </Button>
+            <PageHeader>{owner}</PageHeader>
+          </HeaderContainer>
+
+          <Grid>
+            {data.data.map(nft => (
+              <NftCard
+                onClick={() => onClick(nft)}
+                key={`${nft.collection}-${nft.tokenId}`}
+                {...nft}
+              />
+            ))}
+          </Grid>
+        </>
+      )
+    }
   }
 
   return (
     <StandardTemplate>
       <Container>
-        {getPageContent(queryResult, props)}
+        {getPageContent()}
       </Container>
     </StandardTemplate>
   )

@@ -9,7 +9,7 @@ const green = '#3ca35d'
 const sizes = {
   xxs: '320px',
   xs: '375px',
-  sm: '425px',
+  sm: '480px',
   md: '768px',
   lg: '1024px',
   xl: '1440px',

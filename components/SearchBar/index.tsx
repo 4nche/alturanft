@@ -32,16 +32,22 @@ const StyledInput = styled.input`
   }
 `
 
-interface Props {
+type InputHTMLProps = Omit<
+  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+  'ref' | 'onChange' | 'onSubmit' | 'value'
+>
+
+type Props = {
   value: string
   onChange: (newValue: string) => void
   onSubmit: () => void
   validator?: (value?: string) => string | undefined
-}
+} & InputHTMLProps
+
 
 export default function SearchBar(props: Props) {
   const {
-    onChange, onSubmit, value
+    onChange, onSubmit, value, ...rest
   } = props
 
   const elem = React.useRef<HTMLInputElement>()
@@ -75,6 +81,7 @@ export default function SearchBar(props: Props) {
       placeholder='search for an .eth address'
       spellCheck={false}
       onChange={(evt) => props.onChange(evt.target.value)}
+      {...rest}
     />
   )
 }
